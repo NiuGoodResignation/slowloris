@@ -218,7 +218,10 @@ def slowloris_iteration():
     # Re-create new sockets to replace them until we reach the desired number.
 
     diff = args.sockets - len(list_of_sockets)
-    if diff <= 0:
+    if diff < 0:
+        logging.info("Deleting %s sockets...", -diff)
+        for s in list(list_of_sockets[diff:]):
+            list_of_sockets.remove(s)
         return
 
     logging.info("Creating %s new sockets...", diff)
